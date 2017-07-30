@@ -1,0 +1,71 @@
+﻿@model IEnumerable<ROS.Models.Recipe>
+
+@{
+    ViewBag.Title = "ViewProducts";
+
+    var cats = ViewBag.Categories;
+    var y = "";
+    var pd = 0;
+    var im = 1;
+}
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">
+                <div>Category</div>
+            </a>
+
+        </div>
+        <ul class="nav navbar-nav">
+            @foreach (var group in cats)
+            {
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        @foreach (var c in group)
+                        {
+                            y = @c.Category.Name;
+                        }
+                        @y
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        @foreach (var car in group)
+                        {
+                            <li><a href="ViewProducts/@car.CategoryId">@car.Name</a></li>
+                        }
+                    </ul>
+                </li>
+            }
+        </ul>
+    </div>
+</nav>
+
+<div class="container" >
+    @foreach (var item in Model)
+    {
+        
+        var img = im + ".jpg";
+        <div class="col-md-4">
+            <div class="thumbnail">
+                <img src="~/Content/Images/@img" alt="">
+
+                <div class="caption">
+                    <h3>@Html.DisplayFor(modelItem => item.Name)</h3>
+                    <p>@Html.DisplayFor(modelitem => item.Description)</p>
+                    <p>@Html.DisplayFor(modelItem => item.Price)</p>
+                    @foreach (var i in item.Restaurents)
+                    {
+                        pd = i.Id;
+                        <p>@Html.DisplayFor(modelItem => i.Name)</p>
+                    }
+                    <p>
+                        <a href="/Cart/Buy/@pd" class="btn btn-primary" role="button">Buy now &raquo;</a>
+                        <a href="/Cart/Add/@pd" class="btn btn-default" role="button">Add to Cart &raquo;</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        im++;
+    }
+</div>
